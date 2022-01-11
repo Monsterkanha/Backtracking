@@ -16,3 +16,30 @@ public:
         return res;
     }
 };
+
+
+
+2. To handle duplicates, first sort the array and now  if current element is just equal to previous skip this element. 
+
+
+class Solution {
+public:
+    
+    void backtrack(vector<vector<int>>& res, vector<int>& temp ,vector<int>& nums, int begin = 0){
+        res.push_back(temp);
+        for(int i = begin; i < nums.size(); i++){
+            if(i > begin && nums[i] == nums[i-1]) continue;     // why for i > begin because if this is repeating and i == begin means we have taken previous and have to take this one as well
+                                                                // if i > begin means the nums[i-1] have already created all the subset that could be created by current value, so need to take current value.
+            temp.push_back(nums[i]);
+            backtrack(res, temp, nums, i+1);
+            temp.pop_back();            // Popping because passing by reference.
+        }
+    }
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> temp;
+        sort(nums.begin(), nums.end());
+        backtrack(res, temp, nums);
+        return res;
+    }
+};
