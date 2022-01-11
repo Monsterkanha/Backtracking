@@ -1,0 +1,18 @@
+class Solution {
+public:
+    void help(vector<vector<int>>& res, vector<int>& curr, vector<int>& nums, int begin){
+        res.push_back(curr);
+        for(int i = begin; i < nums.size(); i++){
+            curr.push_back(nums[i]);
+            help(res, curr, nums, i+1);
+            curr.pop_back();   // Reason why we are popping back because we need to pass by reference.
+        }
+    }
+    vector<vector<int>> subsets(vector<int>& nums) {
+        vector<vector<int>> res;
+        vector<int> curr;
+
+        help(res, curr, nums, 0);
+        return res;
+    }
+};
