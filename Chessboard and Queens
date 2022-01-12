@@ -1,0 +1,42 @@
+Here, if current place is not reserved then we will check condition,
+if this column is not being attacked , or this diagonal both left and right.
+To check this efficiently we make three array one for col[8], one for diagonal sum[i+r] , another diff[i + 7-r]
+
+
+
+#include<bits/stdc++.h>
+ 
+using namespace std;
+ 
+ 
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+ 
+	vector<string> s(8);
+	for(int i = 0; i < 8; i++){
+		cin>>s[i];
+	}
+	int ans = 0;
+	vector<bool> sum(15) , diff(15), c(8);
+ 
+ 
+	function<void(int)> dfs = [&](int r){
+		if(r == 8){
+			ans++;
+			return;
+		}
+		for(int i = 0;i < 8; i++){
+			if(s[r][i] == '.' && !c[i] && !sum[i+r] && !diff[i - r + 7]){
+				c[i] = sum[i+r] = diff[i-r+7] = true;
+				dfs(r + 1);
+				c[i] = sum[i+r] = diff[i-r+7] = false;
+			}
+		}
+	};
+ 
+	dfs(0);
+	
+	cout<<ans<<"\n";
+	
+}
