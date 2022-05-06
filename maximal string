@@ -1,0 +1,29 @@
+Here, 
+
+fun(0,B) will simulate like i am at starting index 0 and having B number of swaps left.
+
+now at any point i have to check for all the subsequent indices whether there exist a greater index. if so then swap it with that index.
+
+string Solution::solve(string s, int B) {
+    int n = s.size();
+    string res = s;
+
+    function<void(int, int)> fun = [&](int st, int rem){
+        
+        res = max(res, s);
+        if(st == n || rem == 0) return;
+        bool flag = false;
+        for(int i = st + 1; i < n; i++){
+            if(s[i] > s[st]){
+                flag = true;
+                swap(s[i],s[st]);
+                fun(st+1,rem-1);
+                swap(s[st],s[i]);
+            }
+        }
+        if(!flag) fun(st + 1,rem); 
+    };  
+
+    fun(0, B);
+    return res;
+}
