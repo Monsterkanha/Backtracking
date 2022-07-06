@@ -1,0 +1,41 @@
+Here, i will generate first fact table now, there is a catch if the value of n is large then for large fact initialize with k + 1;
+
+Now, we want kth permutation so just do k-- because dealing with one based indexing. 
+
+
+
+string Solution::getPermutation(int A, int B) {
+    long long fact[A+1];
+    fact[0] = 1;
+    for(int i= 1; i <= A; i++){
+        if(fact[i-1] >= INT_MAX){
+            fact[i] = INT_MAX;
+        }
+        else{
+            fact[i] = fact[i-1]*1LL*i;
+        }
+    }
+    
+    if(B > fact[A]) return "";
+    
+    vector<int> num;
+    for(int i =1 ; i<= A; i++){
+        num.push_back(i);
+    }
+    
+    string res = "";
+    B--;
+    long long bm = B;
+    for(long long i = 0; i < A; i++){
+        int index = bm/(fact[A-i-1]);
+        res = res + to_string(num[index]);
+        num.erase(num.begin() + index);
+        bm -= index*1LL*fact[A-i-1];
+    }
+    return res;
+}
+
+
+1 2 3 4 5 6
+k-- do will have help you to handle corner case easily. 
+
