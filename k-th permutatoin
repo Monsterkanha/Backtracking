@@ -39,3 +39,40 @@ string Solution::getPermutation(int A, int B) {
 1 2 3 4 5 6
 k-- do will have help you to handle corner case easily. 
 
+
+
+2. More better approach.
+Since deletion is very costly. so instead try to do do algorithmic for last 20 elements only.
+and first A-20 fill manually 1, to A-20;
+and now then do solve same way.
+
+
+vector<int> Solution::findPerm(int A, long B) {
+    vector<long> fact(21);
+    fact[0] = 1;
+    for(int i =1; i <= 20; i++){
+        fact[i] = fact[i-1]*i;
+    }
+    vector<int> ans(A);
+    int curr = 0;
+    for(int i = 0; i < A-20; i++){
+        ans[i] = i+1;
+        curr = i;
+    }
+    
+    vector<int> l1;
+    for(int i= max(A-20, 1); i <= A; i++){
+        l1.push_back(i);
+    }
+    B--;            // most important part because dealing with zero index.
+    
+    for(int i = min(20, A-1); i >= 0; i--){
+        int idx = B/fact[i];
+        B -= idx*fact[i];
+        ans[curr++] = l1[idx];
+        l1.erase(l1.begin() + idx);
+    }
+    return ans;
+    
+}
+
