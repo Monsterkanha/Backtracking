@@ -1,0 +1,49 @@
+Here, do this backtracking.
+If the value is already filled then no need to change, just prefill the value to those.
+
+and if the value is not present try to fill 1 to 9 if you can fill and then check whether this is a valid soduku if yes then return otherwise pop the last character.
+
+class Solution {
+public:
+    void solveSudoku(vector<vector<char>>& A) {
+        int box[10][256], row[10][256], col[10][256];
+        memset(row,0,sizeof(row));
+        memset(col,0,sizeof(col));
+        memset(box,0,sizeof(box));
+        
+        
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(A[i][j] != '.')
+                row[i][A[i][j]] = col[j][A[i][j]] = box[3*(i/3) + j/3][A[i][j]] = 1;
+            }
+        }
+        vector<vector<char>> res = A;
+        function<bool(int,int)> solve = [&](int i, int j){
+            if(i == 9) return true;
+            if(j == 9) return solve(i + 1, 0);
+            
+            
+            if(A[i][j] != '.')  return solve(i, j+1);
+            
+            
+            for(int val = '1'; val <= '9'; val++){
+                
+                if(row[i][val] || col[j][val] || box[3*(i/3) + j/3][val]) continue;
+                
+                
+                row[i][val] = col[j][val] = box[3*(i/3) + j/3][val] = 1;
+                
+                res[i][j] = val;
+                if(solve(i, j + 1)) return true;
+                res[i][j] = '.';
+                row[i][val] = col[j][val] = box[3*(i/3) + j/3][val] = 0;
+            }
+            
+            return false;
+        };
+        
+        solve(0, 0);
+        A = res;
+    }
+};
